@@ -56,6 +56,7 @@ public class GsRoot extends VirtualFolder{
 		String tiny=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.tiny");
 		String save=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.xxx.yyy.sAvE");
 		String cover=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.cover");
+		String country=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.country");
 		if(tiny!=null) {
 			if(tiny.compareToIgnoreCase("true")==0)
 				gsObj.setTiny(true);
@@ -67,14 +68,18 @@ public class GsRoot extends VirtualFolder{
 		}
 		if(cover!=null&&(cover.compareToIgnoreCase("old")==0))
 			gsObj.setCoverSrc(false);
+		if(country!=null&&country.length()!=0)
+			gsObj.setCountry(country);	
 	}
 	
 	public GsRoot() {
 		super("GrooveShark",null);
 		this.gsObj=new Gs();
 		this.gsObj.setDebug(new GsPMSDbg());
+		if(gsObj.initError!=null)
+			gsObj.error(gsObj.initError);
 		setConfig();
-		PMS.minimal("Gs 0.36 using path "+gsObj.savePath+" tiny mode "+gsObj.useTiny()+" init delay "+gsObj.delay);
+		PMS.minimal("Gs 0.37 using path "+gsObj.savePath+" tiny mode "+gsObj.useTiny()+" init delay "+gsObj.delay);
 		PMS.debug("Grooveshark country "+gsObj.jsonCountry());
 	}
 	

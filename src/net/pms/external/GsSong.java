@@ -3,6 +3,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.net.*;
 import java.io.*;
+
 import net.pms.dlna.*;
 import net.pms.PMS;
 
@@ -292,11 +293,12 @@ public class GsSong implements Runnable,Comparable{
 	}
 	
 	public String getName() {
-		return this.name;
+		return name.trim();
 	}
 	
 	public String fileName() {
-		return this.parent.savePath+File.separator+this.name+".mp3";
+		String noSlashU=getName().replace("\\u", "_");
+		return this.parent.savePath+File.separator+noSlashU+".mp3";
 	}
 	
 	

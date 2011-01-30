@@ -8,6 +8,8 @@ import java.net.*;
 import java.io.*;
 import javax.net.ssl.HttpsURLConnection;
 
+import net.pms.PMS;
+
 import java.math.*;
 import java.util.HashMap;
 
@@ -17,6 +19,7 @@ public class Gs {
 	public static final int DefaultDisplayLimit=32;
 	public static final int DefaultDownloadDelay=3000;
 	public static final String IconURL="http://grooveshark.com/webincludes/logo/Grooveshark_Logo_Vertical.png";
+	private static final String defaultCountry="{\"CC3\":\"222305843009213693952\",\"CC2\":\"0\",\"ID\":\"190\",\"CC1\":\"0\",\"CC4\":\"0\"}";
 	public int delay;
 	public static int DisplayLimit;
 	
@@ -39,6 +42,8 @@ public class Gs {
 	private String country;
 	private GsDebug dbg;
 	private boolean gsCover;
+	
+	public String initError;
 
 	
 	// Constructors
@@ -48,6 +53,7 @@ public class Gs {
 	
 	public Gs(String cliRev,String secretString) {
 		try {
+			initError=null;
 			this.clientRev=cliRev;
 			this.secret=secretString;
 			this.rand=new Random();
@@ -64,14 +70,16 @@ public class Gs {
 				return;
 			}	
 			
-			Pattern co=Pattern.compile("country\":\\{(.*)\\}");
+			//Pattern co=Pattern.compile("country\":\\{(.*)\\}");
+			Pattern co=Pattern.compile("country\":\\{([^\\}]+)\\}");
 			Matcher m1=co.matcher(page);
+			this.country=Gs.defaultCountry;
 			if(m1.find())
-				this.country="{"+URLDecoder.decode(m1.group(1),"UTF-8");
-			if(country==null||country.length()==0)
-				this.country="{\"CC3\":\"222305843009213693952\",\"CC2\":\"0\",\"ID\":\"190\",\"CC1\":\"0\",\"CC4\":\"0\"}";
-			this.md5=MessageDigest.getInstance("MD5");
+				this.country="{"+URLDecoder.decode(m1.group(1),"UTF-8")+"}";
+			if(country==null||country.length()==0||country.charAt(0)!='{')
+				this.country=Gs.defaultCountry;
 			this.sha1=MessageDigest.getInstance("SHA1");
+			this.md5=MessageDigest.getInstance("MD5");
 			this.session=m.group(1);
 			this.md5.reset();
 			this.md5.update(this.session.getBytes());
@@ -89,7 +97,7 @@ public class Gs {
 			this.gsCover=true;
 			}
 		catch (Exception e) {
-			error("exception during init "+e);
+			initError="exception during init "+e;
 			return ;
 		}
 	}	
@@ -108,8 +116,8 @@ public class Gs {
 		return str.replaceAll("\"","");
 	}
 	
-	public String jsonCountry() {
-		return "\"country\":"+country;
+	public String jsonCountry() {		
+		return "\"country\":"+this.country;
 	}
 	
 	private String jsonHeader(String method) {
@@ -391,6 +399,11 @@ public class Gs {
 		return gsCover;
 	}
 	
+	public void setCountry(String c) {
+		country=c;
+	}
+	
+	
 	public static void main(String args[]) {
 		int i;
 		Gs g =new Gs();
@@ -431,7 +444,9 @@ public class Gs {
 		GsSong[] pop=GsSong.parsePop(g.getPopular(),g);
 		//pop[0].download();
 		//songs1[0].download();
+//		System.out.println("едц "+g.search("baksmalla"));
 		System.out.println("all done");
+		
 	}
 	
 }

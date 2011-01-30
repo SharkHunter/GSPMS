@@ -1,6 +1,7 @@
 package net.pms.external;
 
 import java.io.*;
+import java.net.URLDecoder;
 
 import net.pms.dlna.*;
 import net.pms.PMS;
