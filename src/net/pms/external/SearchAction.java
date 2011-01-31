@@ -1,11 +1,9 @@
 package net.pms.external;
-import net.pms.dlna.*;
+
 import java.io.*;
 import net.pms.network.HTTPResource;
-import net.pms.PMS;
 import net.pms.dlna.virtual.*;
-import net.pms.external.StartStopListener;
-import javax.swing.JComponent;
+
 
 public class SearchAction extends VirtualFolder {
 	private Search sobj;

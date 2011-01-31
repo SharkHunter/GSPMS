@@ -3,8 +3,6 @@ package net.pms.external;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.io.*;
-
 import net.pms.PMS;
 
 public class GsAlbum {

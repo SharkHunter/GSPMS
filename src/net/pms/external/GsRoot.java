@@ -6,6 +6,7 @@ import net.pms.dlna.virtual.VirtualFolder;
 
 public class GsRoot extends VirtualFolder{
 	private Gs gsObj;
+	private String dbgFile;
 	
 	private void setDelay() {
 		String delay=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.init_delay");
@@ -23,7 +24,7 @@ public class GsRoot extends VirtualFolder{
 		String disp=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.max_display");
 		if(disp!=null) {
 			try {
-				gsObj.DisplayLimit=Integer.parseInt(disp);
+				Gs.DisplayLimit=Integer.parseInt(disp);
 			}
 			catch (Exception e) {
 				PMS.minimal("Illegal max_display value "+e.toString());
@@ -31,7 +32,7 @@ public class GsRoot extends VirtualFolder{
 		}
 	}
 	
-	private void setPath() {
+	private void setPath(String privDbg) {
 		try {
 			File saveFolder=new File(PMS.getConfiguration().getTempFolder(),"gs_plugin");
 			String confPath=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.path");
@@ -43,6 +44,8 @@ public class GsRoot extends VirtualFolder{
 			else 
 				path=confPath;
 			gsObj.setPath(path);
+			if(privDbg!=null&&privDbg.equalsIgnoreCase("true"))
+				dbgFile=path+File.separator+"gs_debug.txt";
 		}
 		catch (Exception e) {
 			PMS.minimal("could not set gs path correctly "+e.toString());
@@ -50,13 +53,15 @@ public class GsRoot extends VirtualFolder{
 	}
 	
 	private void setConfig() {
+		String privDbg=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.private_dbg");
 		setDelay();
-		setPath();
+		setPath(privDbg);
 		setMaxDisplay();
 		String tiny=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.tiny");
 		String save=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.xxx.yyy.sAvE");
 		String cover=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.cover");
 		String country=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.country");
+		
 		if(tiny!=null) {
 			if(tiny.compareToIgnoreCase("true")==0)
 				gsObj.setTiny(true);
@@ -69,7 +74,7 @@ public class GsRoot extends VirtualFolder{
 		if(cover!=null&&(cover.compareToIgnoreCase("old")==0))
 			gsObj.setCoverSrc(false);
 		if(country!=null&&country.length()!=0)
-			gsObj.setCountry(country);	
+			gsObj.setCountry(country);
 	}
 	
 	public GsRoot() {
@@ -79,8 +84,17 @@ public class GsRoot extends VirtualFolder{
 		if(gsObj.initError!=null)
 			gsObj.error(gsObj.initError);
 		setConfig();
-		PMS.minimal("Gs 0.37 using path "+gsObj.savePath+" tiny mode "+gsObj.useTiny()+" init delay "+gsObj.delay);
-		PMS.debug("Grooveshark country "+gsObj.jsonCountry());
+		
+		String info="Gs 0.39 using path "+gsObj.savePath+" tiny mode "+gsObj.useTiny()+" init delay "+gsObj.delay;
+		PMS.minimal(info);
+		if(dbgFile!=null) {
+			gsObj.setDebug(new GsPrivDbg(new File(dbgFile),new GsPMSDbg()));
+			gsObj.debug("Private debug started");
+			gsObj.debug(info);
+			PMS.minimal("Gs private debug file "+dbgFile);
+			
+		}
+		gsObj.debug("Grooveshark country "+gsObj.jsonCountry());
 	}
 	
 	public InputStream getThumbnailInputStream() {

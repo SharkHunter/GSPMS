@@ -2,8 +2,6 @@ package net.pms.external;
 import java.io.*;
 
 import net.pms.dlna.virtual.VirtualFolder;
-import net.pms.dlna.virtual.VirtualVideoAction;
-import net.pms.dlna.*;
 import net.pms.PMS;
 
 public class SearchFolder extends VirtualFolder {

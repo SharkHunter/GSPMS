@@ -1,11 +1,8 @@
 package net.pms.external;
 
 import java.io.*;
-
 import net.pms.PMS;
-import net.pms.dlna.WebVideoStream;
 import net.pms.dlna.virtual.VirtualFolder;
-import net.pms.dlna.virtual.VirtualVideoAction;
 
 public class GsSearches extends VirtualFolder {
 	

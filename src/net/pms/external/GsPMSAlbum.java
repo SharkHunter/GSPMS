@@ -1,7 +1,6 @@
 package net.pms.external;
 
 import java.io.*;
-import net.pms.PMS;
 import net.pms.dlna.virtual.VirtualFolder;
 import net.pms.external.GsPMSSong;
 

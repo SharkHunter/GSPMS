@@ -1,9 +1,6 @@
 package net.pms.external;
-import net.pms.PMS;
-import net.pms.dlna.DLNAResource;
-import net.pms.dlna.WebVideoStream;
+
 import net.pms.dlna.virtual.*;
-import net.pms.dlna.*;
 
 public class Search extends VirtualFolder {
 	private SearchObj sobj;

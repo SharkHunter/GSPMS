@@ -7,13 +7,11 @@ import net.pms.PMS;
 public class GsByteInputStream extends ByteArrayInputStream{
 	
 	private ByteArrayOutputStream out;
-	private int expectedLength;
 	private int MAX_BLOCK=15;
 		
 	public GsByteInputStream(ByteArrayOutputStream out,int expLen) {
 		super(out.toByteArray());
 		this.out=out;
-		this.expectedLength=expLen;
 	}
 	
 	public boolean incBuf(byte[] newBuf) {

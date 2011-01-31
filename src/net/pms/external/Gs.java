@@ -8,8 +8,6 @@ import java.net.*;
 import java.io.*;
 import javax.net.ssl.HttpsURLConnection;
 
-import net.pms.PMS;
-
 import java.math.*;
 import java.util.HashMap;
 
@@ -59,7 +57,7 @@ public class Gs {
 			this.rand=new Random();
 			URL url=new URL("http://listen.grooveshark.com/");
 			HttpURLConnection conn =(HttpURLConnection)url.openConnection();
-			conn.setFollowRedirects(true);
+			HttpURLConnection.setFollowRedirects(true);
 			conn.setRequestMethod("GET");
 			Pattern re=Pattern.compile("sessionID\":\"([A-z0-9]+)\",");
 			String page=fetchPage(conn);
@@ -89,7 +87,7 @@ public class Gs {
 			this.savePath="";
 			this.tiny=false;
 			this.delay=DefaultDownloadDelay;
-			this.DisplayLimit=DefaultDisplayLimit;
+			Gs.DisplayLimit=DefaultDisplayLimit;
 			this.save=false;
 			this.dbg=null;
 			//this.save=true;
@@ -265,7 +263,7 @@ public class Gs {
 		try {
 			URL url=new URL("http://cowbell.grooveshark.com/more.php");
 			HttpURLConnection conn =(HttpURLConnection)url.openConnection();
-			conn.setFollowRedirects(true);
+			HttpURLConnection.setFollowRedirects(true);
 			conn.setRequestMethod("POST");
 			String page=postPage(conn,param,method);
 			Pattern re=Pattern.compile("\"result\":(.*)");
@@ -440,8 +438,8 @@ public class Gs {
 		//songs1[0].download();
 		String apage=g.search("iron maiden", "Artists");
 		System.out.println("apage "+apage);
-		GsArtist[] artists=GsArtist.parseArtists(apage,g);
-		GsSong[] pop=GsSong.parsePop(g.getPopular(),g);
+		//GsArtist[] artists=GsArtist.parseArtists(apage,g);
+		//GsSong[] pop=GsSong.parsePop(g.getPopular(),g);
 		//pop[0].download();
 		//songs1[0].download();
 //		System.out.println("едц "+g.search("baksmalla"));

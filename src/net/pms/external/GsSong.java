@@ -4,10 +4,7 @@ import java.util.regex.Pattern;
 import java.net.*;
 import java.io.*;
 
-import net.pms.dlna.*;
-import net.pms.PMS;
-
-public class GsSong implements Runnable,Comparable{
+public class GsSong implements Runnable,Comparable<Object>{
 	// Special flag to indicate if parsing worked
 	public boolean Ok;
 	

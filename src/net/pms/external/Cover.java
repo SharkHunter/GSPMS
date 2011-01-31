@@ -4,13 +4,11 @@ import java.net.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.*;
-import net.pms.*;
 
 public class Cover {
 	
 	private String album;
 	private String artist;
-	private String song;
 	private Gs parent;
 	private int size;
 	
@@ -30,7 +28,6 @@ public class Cover {
 	public Cover(String artist,String album,String song,Gs parent) {
 		this.album=album;
 		this.artist=artist;
-		this.song=song;
 		this.parent=parent;
 		size=LARGE;
 	}
