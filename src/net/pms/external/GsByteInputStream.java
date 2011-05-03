@@ -1,6 +1,7 @@
 package net.pms.external;
 
 import java.io.*;
+import java.util.Arrays;
 
 import net.pms.PMS;
 
@@ -8,10 +9,15 @@ public class GsByteInputStream extends ByteArrayInputStream{
 	
 	private ByteArrayOutputStream out;
 	private int MAX_BLOCK=15;
+	private byte[] zeros;
 		
 	public GsByteInputStream(ByteArrayOutputStream out,int expLen) {
 		super(out.toByteArray());
 		this.out=out;
+		if(Gs.zero_fill) {
+			zeros=new byte[100];
+			Arrays.fill(zeros,(byte)0);
+		}
 	}
 	
 	public boolean incBuf(byte[] newBuf) {
@@ -39,7 +45,10 @@ public class GsByteInputStream extends ByteArrayInputStream{
 		// but we are desperate so we try to increase the buffer
 		// one last time, if it succeeds or not is irrelevant
 		PMS.debug("GS max blocked reached");
-		incBuf(out.toByteArray());
+		if(Gs.zero_fill)
+			incBuf(zeros);
+		else
+			incBuf(out.toByteArray());
 	}
 	
 	private void block(int len) {

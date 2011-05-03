@@ -61,6 +61,7 @@ public class GsRoot extends VirtualFolder{
 		String save=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.xxx.yyy.sAvE");
 		String cover=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.cover");
 		String country=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.country");
+		String zero=(String)PMS.getConfiguration().getCustomProperty("gs_plugin.zero_fill");
 		
 		if(tiny!=null) {
 			if(tiny.compareToIgnoreCase("true")==0)
@@ -75,6 +76,9 @@ public class GsRoot extends VirtualFolder{
 			gsObj.setCoverSrc(false);
 		if(country!=null&&country.length()!=0)
 			gsObj.setCountry(country);
+		if(zero!=null&&zero.length()>0)
+			if(zero.equalsIgnoreCase("true"))
+				gsObj.zero_fill=true;
 	}
 	
 	public GsRoot() {
@@ -85,7 +89,8 @@ public class GsRoot extends VirtualFolder{
 			gsObj.error(gsObj.initError);
 		setConfig();
 		
-		String info="Gs 0.39 using path "+gsObj.savePath+" tiny mode "+gsObj.useTiny()+" init delay "+gsObj.delay;
+		String info="Gs 0.40 using path "+gsObj.savePath+" tiny mode "+gsObj.useTiny()+" init delay "+gsObj.delay+
+		" zero_fill "+gsObj.zero_fill;
 		PMS.minimal(info);
 		if(dbgFile!=null) {
 			gsObj.setDebug(new GsPrivDbg(new File(dbgFile),new GsPMSDbg()));

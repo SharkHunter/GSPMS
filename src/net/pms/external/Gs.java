@@ -8,6 +8,8 @@ import java.net.*;
 import java.io.*;
 import javax.net.ssl.HttpsURLConnection;
 
+import net.pms.PMS;
+
 import java.math.*;
 import java.util.HashMap;
 
@@ -18,8 +20,10 @@ public class Gs {
 	public static final int DefaultDownloadDelay=3000;
 	public static final String IconURL="http://grooveshark.com/webincludes/logo/Grooveshark_Logo_Vertical.png";
 	private static final String defaultCountry="{\"CC3\":\"222305843009213693952\",\"CC2\":\"0\",\"ID\":\"190\",\"CC1\":\"0\",\"CC4\":\"0\"}";
+	private static final String agentString="Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 (.NET CLR 3.5.30729)";
 	public int delay;
 	public static int DisplayLimit;
+	public static boolean zero_fill;
 	
 	// Fields
 	private String session;
@@ -55,21 +59,24 @@ public class Gs {
 			this.clientRev=cliRev;
 			this.secret=secretString;
 			this.rand=new Random();
-			URL url=new URL("http://listen.grooveshark.com/");
+			zero_fill=false;
+			URL url=new URL("http://grooveshark.com/");
 			HttpURLConnection conn =(HttpURLConnection)url.openConnection();
 			HttpURLConnection.setFollowRedirects(true);
+			conn.setInstanceFollowRedirects(true);
 			conn.setRequestMethod("GET");
+			conn.setRequestProperty("User-Agent",agentString);
 			Pattern re=Pattern.compile("sessionID\":\"([A-z0-9]+)\",");
 			String page=fetchPage(conn);
 			//System.out.println("page "+page);
 			Matcher m=re.matcher(page);
-		
+			
 			if(!m.find()) { // weired stuff
 				return;
 			}	
 			
 			//Pattern co=Pattern.compile("country\":\\{(.*)\\}");
-			Pattern co=Pattern.compile("country\":\\{([^\\}]+)\\}");
+			Pattern co=Pattern.compile("country\":\\s*\\{([^\\}]+)\\}");
 			Matcher m1=co.matcher(page);
 			this.country=Gs.defaultCountry;
 			if(m1.find())
@@ -135,7 +142,7 @@ public class Gs {
 	
 	private String postPage(URLConnection connection,String param,String method) {
 		try {
-			connection.setRequestProperty("User-Agent","Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 (.NET CLR 3.5.30729)");
+			connection.setRequestProperty("User-Agent",agentString);
 			connection.setRequestProperty("Content-Type","application/json");
 			connection.setDoInput(true);
 			connection.setDoOutput(true);	
