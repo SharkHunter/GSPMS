@@ -21,6 +21,15 @@ public class Gs {
 	public static final String IconURL="http://grooveshark.com/webincludes/logo/Grooveshark_Logo_Vertical.png";
 	private static final String defaultCountry="{\"CC3\":\"222305843009213693952\",\"CC2\":\"0\",\"ID\":\"190\",\"CC1\":\"0\",\"CC4\":\"0\"}";
 	private static final String agentString="Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 (.NET CLR 3.5.30729)";
+	
+	private static final String DefaultCliName="htmlshark";
+	private static final String DefaultCliRev="20110722";
+	private static final String DefaultSecret="neverGonnaGiveYouUp";
+	
+	public static final String StreamCliName="jsqueue";
+	public static final String StreamCliRev="20110722.09";
+	public static final String StreamCliSecret="neverGonnaLetYouDown";
+	
 	public int delay;
 	public static int DisplayLimit;
 	public static boolean zero_fill;
@@ -29,6 +38,7 @@ public class Gs {
 	private String session;
 	private String token;
 	private long lastToken;
+	private String cliName;
 	private String clientRev;
 	private String secret;
 	private boolean tiny;
@@ -50,15 +60,17 @@ public class Gs {
 	
 	// Constructors
 	public Gs() {
-		this("20101012.37","quitStealinMahShit");
+		//this("20101012.37","quitStealinMahShit");
+		this(DefaultCliName,DefaultCliRev,DefaultSecret);
 	}
 	
-	public Gs(String cliRev,String secretString) {
+	public Gs(String name,String cliRev,String secretString) {
 		try {
 			initError=null;
 			this.clientRev=cliRev;
 			this.secret=secretString;
 			this.rand=new Random();
+			cliName=name;
 			zero_fill=false;
 			URL url=new URL("http://grooveshark.com/");
 			HttpURLConnection conn =(HttpURLConnection)url.openConnection();
@@ -125,12 +137,12 @@ public class Gs {
 		return "\"country\":"+this.country;
 	}
 	
-	private String jsonHeader(String method) {
+	private String jsonHeader(String method,String name,String rev,String secretStr) {
 		String tStr="";
 		if(method.compareTo("getCommunicationToken")!=0)
-			tStr=","+jsonString("token",generateToken(method));
-		String hdrData=jsonString("client","gslite")+","+
-				   	   jsonString("clientRevision",this.clientRev)+","+
+			tStr=","+jsonString("token",generateToken(method,secretStr));
+		String hdrData=jsonString("client",name)+","+
+				   	   jsonString("clientRevision",rev)+","+
 				   	   jsonString("uuid",this.uuid)+","+
 				   	   jsonString("session",this.session)+","+
 				   	   jsonCountry()+tStr;
@@ -139,15 +151,19 @@ public class Gs {
 	}
 	
 	// Get JSON page
-	
 	private String postPage(URLConnection connection,String param,String method) {
+		return postPage(connection,param,method,cliName,clientRev,secret);
+	}
+	
+	private String postPage(URLConnection connection,String param,String method,
+			String name,String rev,String secretStr) {
 		try {
 			connection.setRequestProperty("User-Agent",agentString);
 			connection.setRequestProperty("Content-Type","application/json");
 			connection.setDoInput(true);
 			connection.setDoOutput(true);	
 			String params=jsonBlock("parameters",param);
-			String postData="{"+jsonHeader(method)+","+params+","+jsonString("method",method)+"}";
+			String postData="{"+jsonHeader(method,name,rev,secretStr)+","+params+","+jsonString("method",method)+"}";
 		
 		  //Send request
 			DataOutputStream wr = new DataOutputStream (
@@ -218,7 +234,7 @@ public class Gs {
 	
 	// Internal gs api functions
 	
-	private String generateToken(String method) {
+	private String generateToken(String method,String realSecret) {
 		String ranChar="";
 		int i,x;
 		
@@ -228,7 +244,7 @@ public class Gs {
 			x=rand.nextInt(16);
 			ranChar=ranChar+Integer.toHexString(x);
 		}	
-		String t=method+":"+this.token+":"+this.secret+":" +ranChar;
+		String t=method+":"+this.token+":"+realSecret+":" +ranChar;
 		this.sha1.reset();
 		this.sha1.update(t.getBytes());
 		return ranChar+toHex(this.sha1.digest());
@@ -267,12 +283,16 @@ public class Gs {
 	}
 	
 	public String request(String param,String method) {
+		return request(param,method,cliName,clientRev,secret);
+	}
+	
+	public String request(String param,String method,String name,String rev,String secret) {
 		try {
 			URL url=new URL("http://cowbell.grooveshark.com/more.php");
 			HttpURLConnection conn =(HttpURLConnection)url.openConnection();
 			HttpURLConnection.setFollowRedirects(true);
 			conn.setRequestMethod("POST");
-			String page=postPage(conn,param,method);
+			String page=postPage(conn,param,method,name,rev,secret);
 			Pattern re=Pattern.compile("\"result\":(.*)");
 			Matcher m=re.matcher(page);
 			if(!m.find())
@@ -414,17 +434,17 @@ public class Gs {
 		Gs g =new Gs();
 		g.setPath("c:\\gs_tst");
 		g.setSave(true);
-		String tpage=g.tinySearch("fear of the dark");
+/*		String tpage=g.tinySearch("fear of the dark");
 		System.out.println("tpage "+tpage);
 		GsSong[] songs=GsSong.parseTiny(tpage, g);
 		for(i=0;i<songs.length;i++)
-			
-			System.out.println("song "+songs[i].toString());
+			System.out.println("song "+songs[i].toString());*/
 		String gpage=g.search("fear of the dark");
 		System.out.println("gpage "+gpage);
 		GsSong[] songs1=GsSong.parseSongs(gpage, g);
 		try {
 		System.out.println("gsong "+URLDecoder.decode(songs1[0].getId(),"UTF-8"));
+		songs1[0].download();
 		}
 		catch (Exception e) {
 			;

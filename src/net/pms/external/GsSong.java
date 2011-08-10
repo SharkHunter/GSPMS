@@ -198,7 +198,8 @@ public class GsSong implements Runnable,Comparable<Object>{
 					 this.parent.jsonString("prefetch","False")+","+
 					 this.parent.jsonCountry();
 		//Pattern re=Pattern.compile("streamKey:([a-zA-Z0-9]+),streamServerID:([0-9]+),ip:([a-zA-Z0-9\\.]+)");
-		String p=this.parent.request(param, "getStreamKeyFromSongIDEx");
+		String p=this.parent.request(param, "getStreamKeyFromSongIDEx",
+				Gs.StreamCliName,Gs.StreamCliRev,Gs.StreamCliSecret);
 		//Matcher m=re.matcher(p);
 		//parent.debug("stream data page "+p);
 		int start=p.indexOf('{');
