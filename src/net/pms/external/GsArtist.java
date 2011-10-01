@@ -96,7 +96,7 @@ public class GsArtist {
 			if(!m.find())
 				return songs;
 			String songData=m.group(1);
-			return filterSongs(GsSong.parseSongs(songData, parent, songReg, songOrder),artistId);
+			return filterSongs(GsSong.parseSongs(songData, parent, songReg, songOrder,GsSong.Layout_Songs),artistId);
 		}
 		
 		public static GsArtist[] parseArtists(String data,Gs parent) {

@@ -70,7 +70,9 @@ public class GsSong implements Runnable,Comparable<Object>{
 		this.id=Gs.getField(s,"songID");
 		this.artistId=Gs.getField(s,"artistID");
 		this.albumId=Gs.getField(s,"albumID");
-		this.name=Gs.getField(s,"name");
+		this.name=Gs.getField(s,"SongName");
+		if(name==null||name.length()==0)
+			name=Gs.getField(s,"Name"); // try this instead
 		this.artist=Gs.getField(s,"artistName");
 		this.album=Gs.getField(s,"albumName");
 		this.plays=Gs.getField(s,"plays");
