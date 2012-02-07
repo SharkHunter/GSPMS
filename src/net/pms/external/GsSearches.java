@@ -63,9 +63,7 @@ public class GsSearches extends VirtualFolder {
 		}
 	}
 	
-	public boolean refreshChildren() {
-		boolean r=refresh;
-		refresh=false;
-		return r;		
+	public void refreshChildren() {
+		
 	}
 }

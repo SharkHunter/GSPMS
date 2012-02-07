@@ -89,7 +89,7 @@ public class GsRoot extends VirtualFolder{
 			gsObj.error(gsObj.initError);
 		setConfig();
 		
-		String info="Gs 0.43 using path "+gsObj.savePath+" tiny mode "+gsObj.useTiny()+" init delay "+gsObj.delay+
+		String info="Gs 0.46 using path "+gsObj.savePath+" tiny mode "+gsObj.useTiny()+" init delay "+gsObj.delay+
 		" zero_fill "+gsObj.zero_fill;
 		PMS.minimal(info);
 		if(dbgFile!=null) {

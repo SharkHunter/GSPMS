@@ -34,9 +34,9 @@ public class SearchAction extends VirtualFolder {
 		discovered=false;
 	}
 	
-	public boolean refreshChildren() {
-		discovered=false;
-		return false;
+	public boolean isRefreshNeeded() {
+		setDiscovered(false);
+		return true;
 	}
 
 	@Override

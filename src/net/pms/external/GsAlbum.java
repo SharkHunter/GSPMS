@@ -90,16 +90,17 @@ public class GsAlbum {
 	}
 	
 	public GsSong[] getSongs() {
-		PMS.debug("get song for album "+album);
+		//PMS.debug("get song for album "+album);
 		String param=parent.jsonString("offset", "0")+","+
 				     parent.jsonString("isVerified", verified)+","+
 				     parent.jsonString("albumID", albumId);
-		String p=parent.request(param, "albumGetSongs");
-		Pattern re=Pattern.compile("\\{songs:\\[(.*)\\}");
+		String p=parent.request(param, "albumGetAllSongs");
+		Pattern re=Pattern.compile("\\[(.*)\\}");
 		Matcher m=re.matcher(p);
 		if(!m.find()) {
 			GsSong[] songs=new GsSong[1];
 			songs[0]=null;
+			return songs;
 		}
 		String songData=m.group(1);
 		return filterSongs(GsSong.parseSongs(songData, parent, songReg, songOrder,GsSong.Layout_Songs),albumId);

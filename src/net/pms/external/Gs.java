@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import java.security.*;
 import java.net.*;
 import java.io.*;
+
 import javax.net.ssl.HttpsURLConnection;
 
 import net.pms.PMS;
@@ -23,12 +24,13 @@ public class Gs {
 	private static final String agentString="Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 (.NET CLR 3.5.30729)";
 	
 	private static final String DefaultCliName="htmlshark";
-	private static final String DefaultCliRev="20110722";
-	private static final String DefaultSecret="neverGonnaGiveYouUp";
+	private static final String DefaultCliRev="20120206";
+	private static final String DefaultSecret="grahamCrackersRYummy";
 	
 	public static final String StreamCliName="jsqueue";
-	public static final String StreamCliRev="20110722.09";
-	public static final String StreamCliSecret="neverGonnaLetYouDown";
+	//public static final String StreamCliRev="20110722.09";
+	public static final String StreamCliRev="20120206.01";
+	public static final String StreamCliSecret="grahamCrackersRYummy";
 	
 	public int delay;
 	public static int DisplayLimit;
@@ -164,28 +166,25 @@ public class Gs {
 			connection.setDoOutput(true);	
 			String params=jsonBlock("parameters",param);
 			String postData="{"+jsonHeader(method,name,rev,secretStr)+","+params+","+jsonString("method",method)+"}";
-		
+			
 		  //Send request
 			DataOutputStream wr = new DataOutputStream (
-					connection.getOutputStream ());
+					connection.getOutputStream());
 			wr.writeBytes (postData);
 			wr.flush ();
 			wr.close ();
-			
-	
 
-	      //Get Response	
+	      //Get Response
 			InputStream is = connection.getInputStream();
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 			String line;
-			StringBuffer response = new StringBuffer(); 
+			StringBuffer response = new StringBuffer();
 			while((line = rd.readLine()) != null) {
 				response.append(line);
 				response.append('\r');
 			}
 			rd.close();
-			//System.out.println("resp "+response.toString());
-			return response.toString();
+			return decode(response.toString());
 		}
 		catch (Exception e) {
 			debug("exceptiuon "+e);
@@ -258,7 +257,7 @@ public class Gs {
 			conn.setRequestMethod("POST");
 			Pattern r=Pattern.compile("result\":\"([A-z0-9]+)\"");
 			String param=jsonString("secretKey",this.sessionHash);
-			token=postPage(conn,param,"getCommunicationToken");
+			String token=postPage(conn,param,"getCommunicationToken");
 			Matcher m=r.matcher(token);
 			if(!m.find())
 				return "";
@@ -282,7 +281,7 @@ public class Gs {
 		return m.group(1);
 	}
 	
-	public String request(String param,String method) {
+	public String request(String param,String method) {	
 		return request(param,method,cliName,clientRev,secret);
 	}
 	
@@ -315,7 +314,7 @@ public class Gs {
 	}
 	public String search(String str,String type) {
 		String param=jsonString("query",str)+","+jsonString("type",ucFirst(type));
-		return request(param,"getSearchResultsEx");
+		return request(param,"getResultsFromSearch");
 	}
 	
 	public String tinySearch(String str) {
@@ -345,6 +344,14 @@ public class Gs {
 		}
 		return "";
 	}
+	
+	private String decode(String s) {
+		//\u00e4
+		String x= s.replaceAll("\\u00e4", "ä").replaceAll("\\u00e5", "å").replaceAll("\\u00e6", "ö");
+		//debug("s "+s+" x "+x);
+		return x;
+	}
+	
 	// Other external functions
 	
 	public static String getField(Matcher m,String[] order,String field) {
