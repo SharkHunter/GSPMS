@@ -1,6 +1,8 @@
 package net.pms.external;
 
 import java.io.*;
+import java.util.ArrayList;
+
 import net.pms.dlna.*;
 import net.pms.PMS;
  
@@ -15,14 +17,17 @@ public class GsPMSSong extends DLNAResource{
 		this.song=song;
 		this.downloading=false;
 		this.out=new ByteArrayOutputStream();
-		if(media==null) {
-			media=new DLNAMediaInfo();
+	/*	if(getMedia()==null) {
+			DLNAMediaInfo m=new DLNAMediaInfo();
 			DLNAMediaAudio audio=new DLNAMediaAudio();
-			audio.album=song.getAlbum();
-			audio.artist=song.getArtist();
-			audio.songname=song.getName();
-			media.audioCodes.add(audio);			
-		}
+			audio.setAlbum(song.getAlbum());
+			audio.setArtist(song.getArtist());
+			audio.setSongname(song.getName());
+			ArrayList<DLNAMediaAudio> a=new ArrayList<DLNAMediaAudio>();
+			a.add(audio);
+			m.setAudioCodes(a);
+			setMedia(m);
+		}*/
 	}
 	
 	@Override

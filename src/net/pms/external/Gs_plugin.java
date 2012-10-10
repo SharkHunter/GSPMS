@@ -27,11 +27,8 @@ public class Gs_plugin implements AdditionalFolderAtRoot {
 	public String name() {
 		return "GrooveShark";
 	}
-	
-	
 
-	    //@Override
 	public JComponent config() {
 		return null;
 	}
-	}
+}

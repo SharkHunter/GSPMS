@@ -62,8 +62,4 @@ public class GsSearches extends VirtualFolder {
 			return;
 		}
 	}
-	
-	public void refreshChildren() {
-		
-	}
 }

@@ -19,18 +19,21 @@ public class Gs {
 	public String savePath;
 	public static final int DefaultDisplayLimit=32;
 	public static final int DefaultDownloadDelay=3000;
-	public static final String IconURL="http://grooveshark.com/webincludes/logo/Grooveshark_Logo_Vertical.png";
+	public static final String IconURL="http://www.grooveshark.com/webincludes/logo/Grooveshark_Logo_Horizontal.png";
 	private static final String defaultCountry="{\"CC3\":\"222305843009213693952\",\"CC2\":\"0\",\"ID\":\"190\",\"CC1\":\"0\",\"CC4\":\"0\"}";
 	private static final String agentString="Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 (.NET CLR 3.5.30729)";
 	
 	private static final String DefaultCliName="htmlshark";
-	private static final String DefaultCliRev="20120206";
-	private static final String DefaultSecret="grahamCrackersRYummy";
+	private static final String DefaultCliRev="20120312";
+	private static final String DefaultSecret="breakfastBurritos";
+	
 	
 	public static final String StreamCliName="jsqueue";
 	//public static final String StreamCliRev="20110722.09";
-	public static final String StreamCliRev="20120206.01";
-	public static final String StreamCliSecret="grahamCrackersRYummy";
+	public static final String StreamCliRev="20120312.02";
+	public static final String StreamCliSecret="closeButNoCigar";
+	
+	public static final String TokenSecret="needMoreCowbell";
 	
 	public int delay;
 	public static int DisplayLimit;
@@ -251,8 +254,8 @@ public class Gs {
 	
 	private String getToken() {
 		try {
-			//URL url=new URL("https://cowbell.grooveshark.com/service.php");
-			URL url=new URL("https://cowbell.grooveshark.com/more.php");
+			URL url=new URL("https://grooveshark.com/more.php");
+			//URL url=new URL("https://cowbell.grooveshark.com/more.php");
 			HttpsURLConnection conn=(HttpsURLConnection)url.openConnection();
 			conn.setRequestMethod("POST");
 			Pattern r=Pattern.compile("result\":\"([A-z0-9]+)\"");

@@ -89,9 +89,9 @@ public class GsArtist {
 			String param=parent.jsonString("offset", "0")+","+
 					     parent.jsonString("isVerified", verified)+","+
 					     parent.jsonString("artistID", artistId);
-			String p=parent.request(param, "artistGetSongs");
+			String p=parent.request(param, "artistGetAllSongs");
 			//PMS.debug("page "+p);
-			Pattern re=Pattern.compile("\\{songs:\\[(.*)\\]");
+			Pattern re=Pattern.compile("\\[(.*)\\]");
 			Matcher m=re.matcher(p);
 			if(!m.find())
 				return songs;

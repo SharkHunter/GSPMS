@@ -48,15 +48,21 @@ public class SearchFolder extends VirtualFolder {
 		createSearcher(sobj,"");
     }
     
-    public void refreshChildren(String str) {
-    	PMS.debug("refresh called "+str);
-    	if(str==null)
-    		refreshChildren();
-    	discoverChildren(str);
-    }
-    
     public boolean isRefreshNeeded() {
-		setDiscovered(false);
+    	setDiscovered(false);
+		return true;
+	}
+    
+    public boolean refreshChildren() {
+    	refreshChildren(null);
+    	return true;
+    }
+	
+	public boolean refreshChildren(String str) {
+		if(str==null)
+			return false;
+		getChildren().clear();
+		discoverChildren(str);
 		return true;
 	}
     
