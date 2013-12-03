@@ -20,18 +20,18 @@ public class Gs {
 	public static final int DefaultDisplayLimit=32;
 	public static final int DefaultDownloadDelay=3000;
 	public static final String IconURL="http://www.grooveshark.com/webincludes/logo/Grooveshark_Logo_Horizontal.png";
-	private static final String defaultCountry="{\"CC3\":\"222305843009213693952\",\"CC2\":\"0\",\"ID\":\"190\",\"CC1\":\"0\",\"CC4\":\"0\"}";
+	private static final String defaultCountry="{\"CC3\":\"0\",\"CC2\":\"0\",\"ID\":\"57\",\"CC1\":\"72057594037927940\",\"CC4\":\"0\",\"IPR\":\"0\"}";
 	private static final String agentString="Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 (.NET CLR 3.5.30729)";
 	
 	private static final String DefaultCliName="htmlshark";
-	private static final String DefaultCliRev="20120312";
-	private static final String DefaultSecret="breakfastBurritos";
+	private static final String DefaultCliRev="20130520";
+	private static final String DefaultSecret="nuggetsOfBaller";
 	
 	
 	public static final String StreamCliName="jsqueue";
 	//public static final String StreamCliRev="20110722.09";
-	public static final String StreamCliRev="20120312.02";
-	public static final String StreamCliSecret="closeButNoCigar";
+	public static final String StreamCliRev="20130520";
+	public static final String StreamCliSecret="chickenFingers";
 	
 	public static final String TokenSecret="needMoreCowbell";
 	
@@ -77,7 +77,7 @@ public class Gs {
 			this.rand=new Random();
 			cliName=name;
 			zero_fill=false;
-			URL url=new URL("http://grooveshark.com/");
+	/*		URL url=new URL("http://grooveshark.com/");
 			HttpURLConnection conn =(HttpURLConnection)url.openConnection();
 			HttpURLConnection.setFollowRedirects(true);
 			conn.setInstanceFollowRedirects(true);
@@ -98,11 +98,11 @@ public class Gs {
 			this.country=Gs.defaultCountry;
 			if(m1.find())
 				this.country="{"+URLDecoder.decode(m1.group(1),"UTF-8")+"}";
-			if(country==null||country.length()==0||country.charAt(0)!='{')
+			if(country==null||country.length()==0||country.charAt(0)!='{')*/
 				this.country=Gs.defaultCountry;
 			this.sha1=MessageDigest.getInstance("SHA1");
 			this.md5=MessageDigest.getInstance("MD5");
-			this.session=m.group(1);
+			this.session=randomChar(32);//m.group(1);
 			this.md5.reset();
 			this.md5.update(this.session.getBytes());
 			this.sessionHash=new String(toHex(this.md5.digest()));
@@ -235,17 +235,22 @@ public class Gs {
 
 	
 	// Internal gs api functions
+
+    private String randomChar(int len) {
+        String ranChar="";
+        int i,x;
+
+        for(i=0;i<len;i++) {
+            x=rand.nextInt(16);
+            ranChar=ranChar+Integer.toHexString(x);
+        }
+        return ranChar;
+    }
 	
 	private String generateToken(String method,String realSecret) {
-		String ranChar="";
-		int i,x;
-		
 		if((System.currentTimeMillis()-this.lastToken)>1000) 
 			this.token=getToken();
-		for(i=0;i<6;i++) {
-			x=rand.nextInt(16);
-			ranChar=ranChar+Integer.toHexString(x);
-		}	
+        String ranChar = randomChar(6);
 		String t=method+":"+this.token+":"+realSecret+":" +ranChar;
 		this.sha1.reset();
 		this.sha1.update(t.getBytes());
@@ -350,7 +355,7 @@ public class Gs {
 	
 	private String decode(String s) {
 		//\u00e4
-		String x= s.replaceAll("\\u00e4", "д").replaceAll("\\u00e5", "е").replaceAll("\\u00e6", "ц");
+		String x= s.replaceAll("\\u00e4", "пїЅ").replaceAll("\\u00e5", "пїЅ").replaceAll("\\u00e6", "пїЅ");
 		//debug("s "+s+" x "+x);
 		return x;
 	}
@@ -479,7 +484,7 @@ public class Gs {
 		//GsSong[] pop=GsSong.parsePop(g.getPopular(),g);
 		//pop[0].download();
 		//songs1[0].download();
-//		System.out.println("едц "+g.search("baksmalla"));
+//		System.out.println("пїЅпїЅпїЅ "+g.search("baksmalla"));
 		System.out.println("all done");
 		
 	}
