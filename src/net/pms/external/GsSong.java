@@ -1,4 +1,6 @@
 package net.pms.external;
+import org.apache.commons.lang.StringEscapeUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.net.*;
@@ -73,8 +75,8 @@ public class GsSong implements Runnable,Comparable<Object>{
 		this.name=Gs.getField(s,"SongName");
 		if(name==null||name.length()==0)
 			name=Gs.getField(s,"Name"); // try this instead
-//		parent.debug("name si "+name.replace("\\u00e4", "ä"));
-		name=name.replace("\\u00e4", "ä").replace("\\u00e5", "å").replace("\\u00f6", "ö");
+//		parent.debug("name si "+name.replace("\\u00e4", "ï¿½"));
+		name=name.replace("\\u00e4", "ï¿½").replace("\\u00e5", "ï¿½").replace("\\u00f6", "ï¿½");
 		this.artist=Gs.getField(s,"artistName");
 		this.album=Gs.getField(s,"albumName");
 		this.plays=Gs.getField(s,"plays");

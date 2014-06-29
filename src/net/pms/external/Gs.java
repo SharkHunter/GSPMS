@@ -24,14 +24,17 @@ public class Gs {
 	private static final String agentString="Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 (.NET CLR 3.5.30729)";
 	
 	private static final String DefaultCliName="htmlshark";
-	private static final String DefaultCliRev="20130520";
-	private static final String DefaultSecret="nuggetsOfBaller";
-	
+	private static final String DefaultCliRev="20130520.15";
+	public static final String DefaultSecret="orderMoreCheezPlz";
+	//private static final String DefaultSecret="whereAreTheReindeer";
+//	orderMoreCheezPlz
+
 	
 	public static final String StreamCliName="jsqueue";
 	//public static final String StreamCliRev="20110722.09";
-	public static final String StreamCliRev="20130520";
+	public static final String StreamCliRev="20130520.15";
 	public static final String StreamCliSecret="chickenFingers";
+	//public static final String StreamCliSecret="whereAreTheReindeer";
 	
 	public static final String TokenSecret="needMoreCowbell";
 	
