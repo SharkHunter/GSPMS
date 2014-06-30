@@ -2,6 +2,7 @@ package net.pms.external;
 import java.io.*;
 
 import net.pms.PMS;
+import net.pms.dlna.DLNAResource;
 import net.pms.dlna.virtual.VirtualFolder;
 
 public class GsRoot extends VirtualFolder{
@@ -89,7 +90,7 @@ public class GsRoot extends VirtualFolder{
 			gsObj.error(gsObj.initError);
 		setConfig();
 		
-		String info="Gs 0.56 using path "+gsObj.savePath+" tiny mode "+gsObj.useTiny()+" init delay "+gsObj.delay+
+		String info="Gs 0.60 using path "+gsObj.savePath+" tiny mode "+gsObj.useTiny()+" init delay "+gsObj.delay+
 		" zero_fill "+gsObj.zero_fill;
 		PMS.minimal(info);
 		if(dbgFile!=null) {
@@ -110,6 +111,7 @@ public class GsRoot extends VirtualFolder{
 			return super.getThumbnailInputStream();
 		}
 	}
+
 	public void init() {
 		SearchFolder a=new SearchFolder("Songs",new GsSearch(this.gsObj,"Songs"));
 		addChild(a);
@@ -126,5 +128,10 @@ public class GsRoot extends VirtualFolder{
 		GsPMSPlaylist c=new GsPMSPlaylist(ps);
 		addChild(c);
 		addChild(new GsSearches(this.gsObj));
+	}
+
+	public DLNAResource lastPlay(String arg) {
+		String[] tmp = arg.split(">");
+		return new GsPMSSong(new GsSong(tmp, gsObj));
 	}
 }

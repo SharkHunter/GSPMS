@@ -31,4 +31,8 @@ public class Gs_plugin implements AdditionalFolderAtRoot {
 	public JComponent config() {
 		return null;
 	}
+
+	public DLNAResource create(String arg0) {
+		return gsRoot.lastPlay(arg0);
+	}
 }

@@ -121,4 +121,9 @@ public class GsPMSSong extends DLNAResource{
 			}
 			return new ByteArrayInputStream(b);
 	}
+
+	public String write() {
+		return song.getName()+">"+song.getAlbum()+">"+song.getArtist()+">"+song.getId()+">"+
+				song.getAlbumId()+">"+song.getArtistId();
+	}
 }
