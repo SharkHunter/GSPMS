@@ -10,6 +10,7 @@ import java.io.*;
 import javax.net.ssl.HttpsURLConnection;
 
 import net.pms.PMS;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import java.math.*;
 import java.util.HashMap;
@@ -324,8 +325,8 @@ public class Gs {
 		return search(str,"Songs");
 	}
 	public String search(String str,String type) {
-		String param=jsonString("query",str)+","+jsonString("type",ucFirst(type));
-		return request(param,"getResultsFromSearch");
+			String param=jsonString("query", StringEscapeUtils.escapeJava(str))+","+jsonString("type",ucFirst(type));
+			return request(param,"getResultsFromSearch");
 	}
 	
 	public String tinySearch(String str) {
@@ -361,6 +362,7 @@ public class Gs {
 		String x= s.replaceAll("\\u00e4", "�").replaceAll("\\u00e5", "�").replaceAll("\\u00e6", "�");
 		//debug("s "+s+" x "+x);
 		return x;
+		//return StringEscapeUtils.unescapeJava(s);
 	}
 	
 	// Other external functions
@@ -457,6 +459,8 @@ public class Gs {
 		GsSong[] songs=GsSong.parseTiny(tpage, g);
 		for(i=0;i<songs.length;i++)
 			System.out.println("song "+songs[i].toString());*/
+		String opage=g.search("öppna landskap");
+		System.out.println("opage "+opage);
 		String gpage=g.search("fear of the dark");
 		System.out.println("gpage "+gpage);
 		GsSong[] songs1=GsSong.parseSongs(gpage, g);

@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 import net.pms.dlna.*;
 import net.pms.PMS;
- 
+import org.apache.commons.lang.StringEscapeUtils;
+
 
 public class GsPMSSong extends DLNAResource{
 	
@@ -32,7 +33,7 @@ public class GsPMSSong extends DLNAResource{
 	
 	@Override
 	public String getName() {
-		return this.song.getName();
+		return StringEscapeUtils.unescapeJava(this.song.getName());
 	}
 	
 	@Override
@@ -124,6 +125,6 @@ public class GsPMSSong extends DLNAResource{
 
 	public String write() {
 		return song.getName()+">"+song.getAlbum()+">"+song.getArtist()+">"+song.getId()+">"+
-				song.getAlbumId()+">"+song.getArtistId();
+				song.getAlbumId()+">"+song.getArtistId()+">"+song.rawCover();
 	}
 }

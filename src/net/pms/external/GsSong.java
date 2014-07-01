@@ -105,6 +105,8 @@ public class GsSong implements Runnable,Comparable<Object>{
 			this.albumId=fileData[4];
 		if(fileData.length>5)
 			this.artistId=fileData[5];
+		if(fileData.length>6)
+			this.coverURL=fileData[6];
 		this.trackNo=0;
 		this.streamFetched=false;
 		this.length=0;
@@ -347,7 +349,10 @@ public class GsSong implements Runnable,Comparable<Object>{
 			return parent.cover(coverURL);
 		else
 			return cover.getURL();
-		
+	}
+
+	public String rawCover() {
+		return coverURL;
 	}
 	
 	public int delay() {

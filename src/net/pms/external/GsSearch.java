@@ -55,7 +55,8 @@ public class GsSearch implements SearchObj {
 					songs=GsSong.parseTiny(res,parent);
 				}
 				else {
-					res=this.parent.search(searchStr,this.searchType);	
+					res=this.parent.search(searchStr,this.searchType);
+					PMS.debug("search res "+res);
 					songs=GsSong.parseSongs(res,parent);
 				}
 				addSongs(songs,searcher);
