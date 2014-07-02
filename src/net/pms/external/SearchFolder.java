@@ -49,7 +49,6 @@ public class SearchFolder extends VirtualFolder {
     }
     
     public boolean isRefreshNeeded() {
-    	setDiscovered(false);
 		return true;
 	}
     
