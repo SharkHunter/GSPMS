@@ -1,5 +1,12 @@
 package net.pms.external;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.farng.mp3.MP3File;
+import org.farng.mp3.TagConstant;
+import org.farng.mp3.TagOptionSingleton;
+import org.farng.mp3.id3.AbstractID3v2;
+import org.farng.mp3.id3.AbstractID3v2Frame;
+import org.farng.mp3.id3.FrameBodyAPIC;
+import org.farng.mp3.id3.ID3v2_4Frame;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -190,6 +197,9 @@ public class GsSong implements Runnable,Comparable<Object>{
        }
       is.close();
       parent.debug("GSSong download complete");
+		if(save()) {
+		   fixTags();
+		}
     }
 	catch (Exception e) {
 		parent.error("GSsong error reading data "+e.toString());
@@ -444,5 +454,26 @@ public class GsSong implements Runnable,Comparable<Object>{
 			size++;
 		}
 		return res;
+	}
+
+	private void fixTags() {
+		File f = new File(fileName());
+		try {
+			MP3File mp3 = new MP3File(f);
+			TagOptionSingleton.getInstance().setDefaultSaveMode(TagConstant.MP3_FILE_SAVE_OVERWRITE);
+			AbstractID3v2 id3 = mp3.getID3v2Tag();
+			if(!id3.hasFrameOfType("APIC")) {
+				FrameBodyAPIC pic = new FrameBodyAPIC();
+				pic.setDescription("Cover Image");
+				pic.setObject("MIME Type", "image/jpeg");
+				pic.setObject("Picture Data", getCachedCover());
+				AbstractID3v2Frame frame = new ID3v2_4Frame(pic);
+				id3.setFrame(frame);
+			}
+			mp3.save();
+			new File(fileName().replace("mp3","original.mp3")).delete();
+		} catch (Exception e) {
+			parent.debug("error adding pic "+e);
+		}
 	}
 }
